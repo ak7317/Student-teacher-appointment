@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Dashboard | Student–Teacher Appointment</title>
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">🎓 Student Dashboard</div>
+    <ul class="nav-links">
+      <li><a href="dashboard.html" class="active">Appointments</a></li>
+      <li><a href="#" id="logoutBtn">Logout</a></li>
+    </ul>
+  </header>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- My Appointments -->
+    <div class="card">
+      <h2>📌 My Appointments</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Teacher</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="apptTbody">
+          <tr><td colspan="4">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Book Appointment -->
+    <div class="card" style="margin-top:2rem;">
+      <h2>📝 Book New Appointment</h2>
+      <form id="bookForm" class="form">
+        <label for="teacherSelect">Select Teacher</label>
+        <select id="teacherSelect" required></select>
+
+        <label for="date">Date</label>
+        <input type="date" id="date" required />
+
+        <label for="time">Time</label>
+        <input type="time" id="time" required />
+
+        <button type="submit" class="button primary">Book Appointment</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/firebase.js"></script>
+  <script src="js/student.js"></script>
+  <script>
+    document.getElementById("logoutBtn").onclick = () => {
+      auth.signOut().then(() => location.href="index.html");
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+// js/admin.js
+
+// Load Users
+const loadUsers = async () => {
+  const snap = await db.collection('users').get();
+  const tbody = document.getElementById('usersTbody');
+  tbody.innerHTML = '';
+
+  snap.forEach(doc => {
+    const u = doc.data();
+    const badge = u.approved ? 'green' : 'yellow';
+    tbody.insertAdjacentHTML('beforeend', `
+      <tr>
+        <td>${u.name}</td>
+        <td>${u.email}</td>
+        <td>${u.role}</td>
+        <td><span class="badge ${badge}">${u.approved ? 'Approved' : 'Pending'}</span></td>
+        <td>
+          ${!u.approved && u.role === 'teacher' ? 
+            `<button data-id="${doc.id}" class="approveBtn">Approve</button>` : ''}
+        </td>
+      </tr>
+    `);
+  });
+
+  // Approve button click
+  document.querySelectorAll('.approveBtn').forEach(btn => {
+    btn.onclick = async () => {
+      const id = btn.getAttribute('data-id');
+      await db.collection('users').doc(id).update({ approved: true });
+      loadUsers();
+    };
+  });
+};
+
+// Initialize
+auth.onAuthStateChanged(u => {
+  if (!u) return location.href = 'index.html';
+  loadUsers();
+});
